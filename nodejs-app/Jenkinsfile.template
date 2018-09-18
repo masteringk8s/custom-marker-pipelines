@@ -1,14 +1,9 @@
 pipeline {
   agent {
     kubernetes {
-      label 'nodejs-brent'
-      containerTemplate {
-          name 'node-brent'
-          image 'node:10.10.0-alpine'
-          ttyEnabled true
-          command 'cat'
-      }
-      
+      label 'nodejs-app'
+      defaultContainer 'jnlp'
+      yamlFile 'KubernetesPod.yaml'
     }
   }
   
