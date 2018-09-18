@@ -8,12 +8,7 @@ pipeline {
           ttyEnabled true
           command 'cat'
       }
-      containerTemplate {
-          name 'testcafe'
-          image '946759952272.dkr.ecr.us-east-1.amazonaws.com/kypseli/testcafe:alpha-1'
-          ttyEnabled true
-          command 'cat'
-      }
+      
     }
   }
   
