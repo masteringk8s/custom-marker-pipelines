@@ -13,6 +13,11 @@ pipeline {
       
       stage('Test') {
          agent { label 'nodejs-app' }
+         post {
+            success {
+               stash name: 'app', includes: '*.js, public/**, views/*, Dockerfile'
+            }
+         }
          steps {
             checkout scm
             container('nodejs') {
