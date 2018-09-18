@@ -36,7 +36,7 @@ pipeline {
             sumitterParameter "APPROVER"
          }
          steps {
-            echo "Continuing with deployment"
+            echo "Continuing with deployment.  Approved by ${APPROVER}"
          }
       }
    }
