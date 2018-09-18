@@ -1,11 +1,10 @@
 pipeline {
-   agent {
-      label 'nodejs-app'
-   }
+   agent none
    options { 
       buildDiscarder(logRotator(numToKeepStr: '2'))
    }
    stages {
+      agent { label 'nodejs-app' }
       stage('Test') {
         steps {
           container('nodejs') {
@@ -22,6 +21,7 @@ pipeline {
          }
          steps {
             echo "TODO - build and push image"
+            sh 'node --version'
          }
       }
    }
