@@ -1,10 +1,28 @@
 pipeline {
-  agent none
+  agent {
+    kubernetes {
+      label 'kubernetes'
+      containerTemplate {
+          name 'nodejs'
+          image 'node:10.10.1-alpine'
+          ttyEnabled true
+          command 'cat'
+      }
+      containerTemplate {
+          name 'testcafe'
+          image '946759952272.dkr.ecr.us-east-1.amazonaws.com/kypseli/testcafe:alpha-1'
+          ttyEnabled true
+          command 'cat'
+      }
+    }
+  }
+  
   options { 
     buildDiscarder(logRotator(numToKeepStr: '2'))
     skipDefaultCheckout true
     preserveStashes(buildCount: 2)
   }
+  
   stages {
     stage('Test') {
       agent { label 'nodejs-app' }
