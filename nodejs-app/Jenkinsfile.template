@@ -40,14 +40,15 @@ pipeline {
       }
     }
     stage('Build and Push Image') {
-      agent any
       when {
         beforeAgent true
         branch 'master'
       }
-      steps {
-        echo "TODO - build and push image"
-        unstash 'app'
+      container('testcafe') {
+        steps {
+          echo "TODO - build and push image"
+          unstash 'app'
+        }
       }
     }
     stage('Deploy') {
