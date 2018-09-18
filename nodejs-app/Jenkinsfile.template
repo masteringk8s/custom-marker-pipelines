@@ -44,8 +44,8 @@ pipeline {
         beforeAgent true
         branch 'master'
       }
-      container('testcafe') {
-        steps {
+      steps {
+        container('testcafe') {
           echo "TODO - build and push image"
           unstash 'app'
         }
