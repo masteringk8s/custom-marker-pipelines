@@ -3,7 +3,7 @@ pipeline {
     kubernetes {
       label 'nodejs-app'
       defaultContainer 'jnlp'
-      yamlFile 'KubernetesPod.yaml'
+      yamlFile './nodejs-app/KubernetesPod.yaml'
     }
   }
   
