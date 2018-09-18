@@ -37,7 +37,6 @@ pipeline {
          }
          input {
             message "Should we deploy?"
-            submitter "beedemo-ops,emcconne"
             submitterParameter "APPROVER"
          }
          steps {
