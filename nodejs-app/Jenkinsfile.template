@@ -28,7 +28,7 @@ pipeline {
       agent { label 'nodejs-brent' }
       steps {
         checkout scm
-        container('nodejs') {
+        container('node-brent') {
           echo 'Hello World!'   
           sh 'node --version'
         }
