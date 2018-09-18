@@ -22,7 +22,7 @@ pipeline {
          }
          steps {
             echo "TODO - build and push image"
-            sh 'node --version'
+            //sh 'node --version'
          }
       }
    }
