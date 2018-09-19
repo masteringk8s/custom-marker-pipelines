@@ -52,22 +52,58 @@ spec:
             }
           }
         }
-        parallel {
-          stage('Chrome Test') {
-            steps {
+        stage('Browser Tests') {
+          steps {
+            script {
+              parallel chrome: {
                 container('testcafe-chrome') {
-                    sh '/opt/testcafe/docker/testcafe-docker.sh "chromium --no-sandbox" tests/*.js -r xunit:res-chrome.xml'
+                  sh '/opt/testcafe/docker/testcafe-docker.sh "chromium --no-sandbox" tests/*.js -r xunit:res-chrome.xml'
                 }
-              }
-           }
-          stage('Firefox Test') {
-            steps {
-              container('testcafe-firefox') {
-                sh '/opt/testcafe/docker/testcafe-docker.sh firefox --ports 1339,1340 tests/*.js -r xunit:res-firefox.xml'
+              }, 
+              firefox: {
+                  container('testcafe-firefox') {
+                    sh '/opt/testcafe/docker/testcafe-docker.sh firefox --ports 1339,1340 tests/*.js -r xunit:res-firefox.xml'
+                  }
               }
             }
           }
         }
+      }
+      post {
+        success {
+          stash name: 'app', includes: '*.js, public/**, views/*, Dockerfile'
+        }
+        always {
+          junit 'res*.xml'
+        }
+      }    
     }
-}}}
-
+    stage('Build and Push Image') {
+      agent any
+      when {
+        beforeAgent true
+        branch 'master'
+      }
+      steps {
+        echo "TODO - build and push image"
+        unstash 'app'
+      }
+    }
+    stage('Deploy') {
+      when {
+        beforeAgent true
+        branch 'master'
+      }
+      options {
+        timeout(time: 60, unit: 'SECONDS') 
+      }
+      input {
+        message "Should we deploy?"
+        submitterParameter "APPROVER"
+      }
+      steps {
+        echo "Continuing with deployment - approved by ${APPROVER}"
+      }
+    }
+  }
+}
