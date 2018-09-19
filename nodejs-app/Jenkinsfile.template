@@ -1,3 +1,5 @@
+library 'cd-accel'
+
 pipeline {
   agent none
   options { 
@@ -43,13 +45,7 @@ spec:
         stage('App Setup') {
           steps {
             checkout scm
-            script {
-              //define default values that may be overridden via the .nodejs-app file
-              def standard_pkgs = [npmPackages: 'express pug']
-              //use the Pipeline Utility Steps plugin readProperties step to read the .nodejs-app custom marker file 
-              def props = readProperties defaults: standard_pkgs, file: '.nodejs-app'
-              env.npmPackages = props['npmPackages']
-            }
+            defineProps('.nodejs-app', [npmPackages: 'express pug'])
             container('nodejs') {
               sh """
                 npm i -S ${npmPackages}
