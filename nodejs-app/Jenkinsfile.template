@@ -1,34 +1,10 @@
 pipeline {
-  agent {
-    kubernetes {
-      label 'nodejs-brent'
-      defaultContainer 'jnlp'
-      yaml """
-kind: Pod
-metadata:
-  name: nodejs-app
-spec:
-  containers:
-  - name: nodejs
-    image: node:10.10.0-alpine
-    command:
-    - cat
-    tty: true
-  - name: testcafe
-    image: 946759952272.dkr.ecr.us-east-1.amazonaws.com/kypseli/testcafe:alpha-1
-    command:
-    - cat
-    tty: true
-          """
-    }
-  }
-  
+  agent none
   options { 
     buildDiscarder(logRotator(numToKeepStr: '2'))
-    preserveStashes(buildCount: 2)
     skipDefaultCheckout true
+    preserveStashes(buildCount: 2)
   }
-
   stages {
     stage('Test') {
       agent {
@@ -103,20 +79,23 @@ spec:
       }    
     }
     stage('Build and Push Image') {
+      agent any
       when {
         beforeAgent true
         branch 'master'
       }
       steps {
-        container('testcafe') {
-          echo "TODO - build and push image"
-          unstash 'app'
-        }
+        echo "TODO - build and push image"
+        unstash 'app'
       }
     }
     stage('Deploy') {
+      when {
+        beforeAgent true
+        branch 'master'
+      }
       options {
-        timeout(time: 20, unit: 'SECONDS') 
+        timeout(time: 60, unit: 'SECONDS') 
       }
       input {
         message "Should we deploy?"
@@ -128,3 +107,4 @@ spec:
     }
   }
 }
+
