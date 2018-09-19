@@ -68,7 +68,7 @@ spec:
     }
     stage('Deploy') {
       options {
-        timeout(time: 60, unit: 'SECONDS') 
+        timeout(time: 20, unit: 'SECONDS') 
       }
       input {
         message "Should we deploy?"
