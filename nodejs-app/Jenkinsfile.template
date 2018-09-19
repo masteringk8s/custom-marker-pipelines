@@ -96,6 +96,5 @@ spec:
         echo "Continuing with deployment - approved by ${APPROVER}"
       }
     }
-  }
 }
 
